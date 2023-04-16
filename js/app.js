@@ -13,7 +13,7 @@ const buttonClassify = document.querySelector("#classify");
 const buttonClassifyId = document.getElementById("classify")
 
 const knnClassifier = ml5.KNNClassifier();
-knnClassifier.load("./model/myKNN3.json");
+knnClassifier.load("./model/myKNN4.json");
 
 function modelLoaded() {
   console.log("Model succesfully loaded!");
