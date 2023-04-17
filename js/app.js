@@ -1,3 +1,4 @@
+// Initializing variables and constants and selecting DOM elements.
 let model;
 let videoWidth, videoHeight;
 let ctx, canvas;
@@ -12,20 +13,19 @@ const options = document.querySelectorAll(".options button");
 const buttonClassify = document.querySelector("#classify");
 const buttonClassifyId = document.getElementById("classify")
 
+// Initialize KNN classifier and load pre-trained model from file.
 const knnClassifier = ml5.KNNClassifier();
 knnClassifier.load("./model/myKNN4.json");
 
+// Comment: Function to be executed when the model is loaded successfully, logs a message to the console.
 function modelLoaded() {
   console.log("Model succesfully loaded!");
 }
 
-function showButton(){
-
-  buttonClassify.style.display = "block";
-}
-
+// Comment: Event listener for the classify button, which triggers the classify() function when the button is clicked.
 buttonClassify.addEventListener("click", () => classify());
 
+// Comment: Main function that loads the handpose model, sets up the camera, plays the video, and starts landmark detection.
 async function main() {
   model = await handpose.load();
   const video = await setupCamera();
@@ -34,6 +34,7 @@ async function main() {
   // predictLandmarks();
 
 }
+// Comment: Async function that sets up the camera by requesting access to the user's webcam, setting video source object, and returning a Promise that resolves with the video element after metadata is loaded.
 async function setupCamera() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     throw new Error("Webcam not available");
@@ -56,7 +57,9 @@ async function setupCamera() {
     };
   });
 }
-
+// Comment: Async function that uses the trained "model" to estimate hand poses from the video element,
+// retrieves landmarks for each hand pose, formats the landmarks into a "pose" array,
+// and then classifies the pose using the "knnClassifier" with a k value of 25.
 async function classify() {
   const predictions = await model.estimateHands(video);
   console.log(predictions);
@@ -73,6 +76,8 @@ async function classify() {
   });
 }
 
+// Comment: A switch statement that takes the "result" label predicted by the KNN classifier as input,
+// and performs corresponding actions based on the label value.
 function switchFunction(result){
   switch (result) {
     case "0":
@@ -88,6 +93,10 @@ function switchFunction(result){
     }
 
 }
+// Comment: A function that initializes the landmark detection by setting up the canvas, context, and video dimensions,
+// and then clears the canvas and sets the styles for drawing landmarks.
+// It also applies a horizontal flip to the video to correct for webcam mirror image.
+// Finally, it calls the "predictLandmarks()" function to start predicting and drawing the landmarks.
 async function startLandmarkDetection(video) {
   videoWidth = video.videoWidth;
   videoHeight = video.videoHeight;
@@ -180,6 +189,10 @@ function drawPath(ctx, points, closePath) {
   ctx.stroke(region);
 }
 
+// Comment: Adds click event listeners to each option element. When an option is clicked,
+// it adds a shake animation class to the computer and player elements to simulate game play.
+// After a delay of 900ms (0.9 seconds), it removes the shake animation classes and updates
+// the player and computer images, as well as the points based on the game logic.
 options.forEach((option) => {
   option.addEventListener("click", () => {
     computer.classList.add("shakeComputer");
