@@ -13,7 +13,7 @@ const buttonClassify = document.querySelector("#classify");
 const buttonClassifyId = document.getElementById("classify")
 
 const knnClassifier = ml5.KNNClassifier();
-knnClassifier.load("./model/myKNN3.json");
+knnClassifier.load("./model/myKNN4.json");
 
 function modelLoaded() {
   console.log("Model succesfully loaded!");
@@ -67,7 +67,7 @@ async function classify() {
       pose.push(point.landmarks[i][1]);
     }
   }
-  knnClassifier.classify(pose, (err, result) => {
+  knnClassifier.classify(pose, 25, (err, result) => {
     console.log(result.label); // result.label is the predicted label
     switchFunction(result.label)
   });
